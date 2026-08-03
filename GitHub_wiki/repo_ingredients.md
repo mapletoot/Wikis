@@ -13,13 +13,19 @@ Withing the .gitignore file, `#` is a comment and any uncommented lines should b
     # Checkpoints
     .ipynb_checkpoints/
 
+    # Virtual environments
+    .venv/
+
 '''
 
 
 # Virtual environment (.venv/)
 
 ## Overview
-It is usually best to use the repository within a virtual environment. A virtual environment is a list of packages and their versions that the repository was built using, so that others can run the code in the repository with exactly the same requirements. The precise list of packages and their versions are then saved in the `requirements.txt` file that another user can directly install. This is necessary because as packages change they can discontinue funcitons or change syntax, so someone running a newer version of pandas, say, might run into problems when running your file
+It is usually best to use the repository within a virtual environment. A virtual environment is a list of packages and their versions that the repository was built using, so that others can run the code in the repository with exactly the same requirements. The precise list of packages and their versions are then saved in the `requirements.txt` file that another user can directly install. This is necessary because as packages change they can discontinue funcitons or change syntax, so someone running a newer version of pandas, say, might run into problems when running your file. The virtual environment should appear in the `.gitignore` file because:
+- other users may be using different operating systems
+- committing changes to the virtual environment can result in large repositories that are storing lots of unnecessary libraries on GitHub
+- Can cause merge conflicts and many unnecessary git changes
 
 ## Setup 
 To set up a virtual environment, in the root folder in the terminal, use the following command:
@@ -36,8 +42,29 @@ where source is a shell commance that tells us to read and execute the file `.ve
 
 To check it has worked, could run something like `which python` and this should return a path to the bin inside the current folder.
 
+## Built-in packages
+When using a virtual environment, most packages will have to be installed from scratch (see next section) but some are already built in, such as `os` and `pathlib`. `os` is a library used to change the current working directory of the file, as it is common for all files in the repository to have their root set as the main folder in the repository. The `pathlib` library is then used to create paths in a user-friendly way to be used with `os`.
+
 ## Installing packages
 Now that the virtual environment is ready (we can see the `(.venv)` at the start of the file location), we can install packages in the usual way. Good packages to install are: 
+
+
+However, this can be tedious and it is good practice to have a `requirements.txt` file to make work easy to reproduce and to save time.
+
+# Requirements (requirements.txt)
+
+## Creating the file
+
+## Using the file
+When someone else wants to run your code, the usual workflow is:
+- clone the repository
+- create their own virtual environment (because the `.venv` shouldn't be in the repository) and activate it
+- install the required packages using
+```bash
+python -m pip install -r requirements.txt
+```
+In theory, they should then be able to use the repository without any issues, so long as the kernel that the code is running from is using the same libraries as were installed from `requirements.txt`.
+
 
 ## Running notebooks
 In order to run a notebook using jupyterlab, the notebooks need a kernel to run from. This means we have to create a kernel that uses the libraries from the virtual environment we have created above. The code to do this is as follows:
@@ -48,6 +75,5 @@ python -m ipykernel install --user \
 ```
 python selects the python and dependencies used within this environment (see `which python` above). `-m ipykernel install --user` then tells it to use the ipykernel module and install a new kernel for this user account, with the name insider threats and this will be displayed as 'Python (Insider Threats)'.
 
-# Requirements (requirements.txt)
 
 # Readme (readme.md)
